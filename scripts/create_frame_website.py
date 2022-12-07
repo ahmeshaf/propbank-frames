@@ -39,7 +39,7 @@ def main(frame_dir, website_dir, found_errors):
 	# Create common HTML elements
 	## Create roleset search field
 	search_rolesets_form = ET.Element('form', attrib={'autocomplete': 'off',
-													  'method': 'post', 'name': 'rolesetSearch', 'style': 'margin:0 auto;width:300px'})
+													  'method': 'post', 'name': 'rolesetSearch', 'style': 'margin:0 auto; float:right'})
 	div = ET.Element('div', attrib={'class': 'autocomplete'})
 	search_rolesets_form.append(div)
 	input = ET.Element('input', attrib={'id': 'searchRolesets', 'name': 'myRoleset', 'placeholder': 'Roleset ID',
@@ -58,7 +58,7 @@ def main(frame_dir, website_dir, found_errors):
 	search_aliases_form.append(ET.Element('input', attrib={'type': 'submit', 'value': 'Search'}))
 
 	## Create resource selection dropdown
-	select_resource = ET.Element('select', attrib={'id': 'resource', 'style': 'font-size:30px;float:left;'})
+	select_resource = ET.Element('select', attrib={'id': 'resource', 'style': 'font-size:10px;float:left;'})
 	option = ET.Element('option', {'value': 'ALL'})
 	option.text = 'All Frames'
 	select_resource.append(option)
@@ -176,15 +176,17 @@ def main(frame_dir, website_dir, found_errors):
 		wrapper = ET.Element('div', attrib={'class': 'wrapper'})
 		body.append(wrapper)
 
-		header = ET.Element('div', attrib={'class': 'header'})
-		header.text = 'Rolesets - ' + frame_name[:-4]
-		wrapper.append(header)
+		# header = ET.Element('div', attrib={'class': 'header'})
+		# header.text = 'Rolesets - ' + frame_name[:-4]
+		# wrapper.append(header)
 
-		wrapper.append(header_menu)
+		# wrapper.append(header_menu)
 
 		sidebar = ET.Element('div', attrib={'class': 'sidebar'})
 		sidebar.append(ET.Element('div', attrib={'class': 'sticky-spacer'}))
 		sidebar_content = ET.Element('div', attrib={'class': 'sticky-content'})
+		sidebar_content.append(search_rolesets_form)
+		sidebar_content.append(search_aliases_form)
 		a = ET.Element('a', attrib={'href': 'index.html'})
 		a.text = '⮪ Index'
 		sidebar_content.append(a)
@@ -209,6 +211,8 @@ def main(frame_dir, website_dir, found_errors):
 				a = ET.Element('a', attrib={'href': frame_name[:-3] + 'html#' + roleset.get('id'), 'class': 'resource-dependent ' + ' '.join(relevant_resources)})
 				a.text = roleset.get('id')
 				sidebar_content.append(a)
+		sidebar_content.append(select_resource)
+
 		if found_errors:
 			wrapper.append(footer)
 		body.append(ET.Element('script', attrib={'src': 'https://code.jquery.com/jquery-3.5.1.min.js'}))
